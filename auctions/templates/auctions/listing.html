@@ -1,0 +1,90 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+    <h2>Listing: {{ product.title }}</h2>
+    <img class="img" src="{{ product.img.url }}" width="200" height="200">
+    <p style="position: relative; padding:5px; top:10px;">{{ product.description }}</p>
+    <h2>
+        <strong>${{ product.current_bid }}</strong>
+    </h2>
+    <div>{{ product.bid_count }} bid(s) so far.</div>
+
+    {% if user.is_authenticated %}
+        {% if watched %}
+            <a href="{% url 'remove_watchlist' product.id %}">Remove from Watchlist</a>
+        {% else %}
+            <a href="{% url 'add_watchlist' product.id %}">Add to Watchlist</a>
+        {% endif %}
+    {% else %}
+        <p><a href="{% url 'login' %}">Log in</a> to add to your watchlist.</p>
+    {% endif %}
+
+
+    {% if product.status %}
+        {% if user.is_authenticated %}
+            <form action="{% url 'bid' product.id %}" method="POST">
+                {% csrf_token %}
+                <p style="margin-top: 10px;">
+                    <input type="number" class="form-control" name="amount" placeholder="Bid" step="0.01" required id ="id_amount">
+                </p>
+                <input type="submit" class="btn btn-info" value="Place Bid">
+            </form>
+            {% if message %}
+            <div class=".btn-warning">{{ message }}</div>
+            {% endif %}
+        {% else %}
+        <div>
+            <a href="{% url 'login' %}">Login</a> to place a bid
+        </div>
+        {% endif %}
+    {% else %}
+        <p>The auction is closed.</p>
+    {% endif %}
+
+    <!-- <h3>Description:</h3>
+    <p style="position: relative;
+    width: 800px;
+    height: 200px;
+    border: 2px solid grey;
+    padding: 10px;
+    margin: 20px;">{{ product.description }}</p> -->
+    <h3>Details:</h3>
+    <ul>
+        <li>Listed by: {{ product.created_by }}</li>
+        <li>Category: {% if product.category %} {{ product.category }} {% else %} No Category Listed {% endif %}</li>
+    </ul>
+    <!-- Close Auction -->
+    {% if product.status and product.created_by == user %}
+        <form action="{% url 'close' product.id %}" method="POST">
+            {% csrf_token %}
+            <button type="submit" class=".btn-success">Close Auction</button>
+        </form>
+    {% endif %}
+    <!-- Comment -->
+    {% if user.is_authenticated %}
+        <h3>Add a comment:</h3>
+        <form action="{% url 'comment' product.id %}" method="POST">
+            {% csrf_token %}
+            <div class="form-group">
+                {{ comment_form.as_p }}
+            </div>
+            
+            <input type="submit" class="btn btn-info" value="Post" placeholder="comment">
+        </form>
+    {% else %}
+        <p>
+            <a href="{% url 'login' %}">Log in</a> to add a comment.
+        </p>
+    {% endif %}
+    <h4>Comment section:</h4>
+        
+    {% for comment in comments %}
+        <div class="comment_box">
+            <strong>{{ comment.commented_by.username }}</strong> <span style="color: grey;">({{ comment.created_at |date:"l, F j, Y - g:i A" }})</span>
+            <p class="comment">{{ comment.text }}</p>
+        </div>
+        {% empty %}
+            <li>No comments yet.</li>  
+    {% endfor %}
+    
+{% endblock %}

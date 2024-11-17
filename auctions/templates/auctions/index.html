@@ -1,0 +1,22 @@
+{% extends "auctions/layout.html" %}
+
+
+{% block body %}
+    <h2>Active Listings</h2>
+    {% for product in products %}
+        {% if product.status or product.winner == user %}
+            <div class="product">
+                <h3 class="title">
+                    <a href="{% url 'listing' product.id %}">{{ product.title }}</a>
+                </h3>
+                <p>
+                    <img class="image"  src="{{ product.img.url }}" width="200" height="196">
+                </p>
+                <p class="price">
+                    <strong>Price:</strong> ${{ product.current_bid }}
+                </p>
+                <p class="time_created">Created at {{ product.created_at |date:"l, F j, Y - g:i A"}}</p>
+            </div>
+        {% endif %}
+    {% endfor %}
+{% endblock %}  

@@ -1,0 +1,38 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+    <h2>Watchlist</h2>
+    {% for product in products %}
+        {% if product.status or product.winner == user %}
+            <div style="position: relative;
+            width: 800px;
+            height: 200px;
+            border: 2px solid grey;
+            padding: 20px;
+            margin: 20px;">
+                    
+                        <h3 style="position: absolute;
+                        display: block;
+                        height: 200px;
+                        top: 15px;
+                        left: 400px;">
+                            <a href="{% url 'listing' product.id %}">{{ product.title }}</a>
+                        </h3>
+                        <p>
+                            <img style="position: absolute; top: 0;"  src="{{ product.img.url }}" width="200" height="196">
+                        </p>
+                        <p style="position: absolute;
+                        display: block;
+                        top: 60px;
+                        left: 400px;">
+                            <strong>Price:</strong> ${{ product.current_bid }}
+                        </p>
+                        <p style="color:grey; position: absolute;
+                        display: block;
+                        top: 90px;
+                        left: 400px;">Created {{ product.created_at }}</p>
+                    
+            </div>
+        {% endif %}
+    {% endfor %}
+{% endblock %}  

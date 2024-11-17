@@ -1,0 +1,61 @@
+body {
+    padding: 10px;
+}
+
+.component {
+    position: absolute;
+    display: block;
+    width: 20px;
+    height: 200px;
+    top: 20px;
+    left: 400px;
+}
+
+.product {
+    position: relative;
+    width: 800px;
+    height: 200px;
+    border: 2px solid grey;
+    padding: 20px;
+    margin: 20px;
+}
+
+.title {
+    position: absolute;
+    display: block;
+    height: 200px;
+    top: 15px;
+    left: 400px;
+}
+
+.image {
+    position: absolute; top: 0;
+}
+
+.price {
+    position: absolute;
+    display: block;
+    top: 60px;
+    left: 400px;
+}
+
+.time_created {
+    color:grey; position: absolute;
+    display: block;
+    top: 90px;
+    left: 400px;
+}
+
+.comment_box {
+    position: relative;
+    height: auto;
+    border: 2px solid grey;
+    padding: 10px;
+    margin: 10px;
+}
+
+.comment {
+    position: relative; 
+    display: block;
+    top: 10px;
+}
